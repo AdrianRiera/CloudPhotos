@@ -59,4 +59,6 @@ Tener activado el OPTIONS en el API Gateway y tener la función de OPTIONS en el
 ## Despliegue
 
 El link de acceso al proyecto es: [https://project-photos-2.portfolio-adrianriera.com](https://project-photos-2.portfolio-adrianriera.com)
+
+
 ![Diagrama](images/Project_Photos.png)
