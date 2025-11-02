@@ -1,0 +1,51 @@
+name: Deploy Project Photos
+
+on:
+  push:
+    branches:
+      - main   # Se ejecuta cada vez que hago push a la rama main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Clonar el repositorio
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # 2. Configurar Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+
+    # 3. Instalar dependencias
+    - name: Install dependencies
+      run: npm install
+
+    # 4. Build de Vite + Vue
+    - name: Build project
+      run: npm run build
+
+    # 5. Configurar AWS CLI
+    - name: Configure AWS CLI
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-south-2   # la región de S3 donde tengo el /dist
+
+    # 6. Subir carpeta dist a S3
+    - name: Deploy to S3
+      run: |
+        aws s3 sync dist/ s3://bucket-project-photos-2.portfolio-adrianriera.com/ --delete
+
+# 7. Invalidar CloudFront cache
+    - name: Invalidate CloudFront
+      run: |
+        # Usamos el ID de distribución (E2A3SQ8DTP8JXT) que corresponde a
+        # project-photos-2.portfolio-adrianriera.com
+        aws cloudfront create-invalidation \
+          --distribution-id E2A3SQ8DTP8JXT \
+          --paths "/*"
