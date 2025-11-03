@@ -12,7 +12,7 @@ He usado estos servicios:
 - **AWS Certificate Manager (ACM)**: Certificado para permitir HTTPS y conexión segura.
 - **Amazon Cognito User Pools**: Servicio de identidad y acceso. Almacena usuarios, gestiona el login y está configurado como Proveedor de Identidad Federada para permitir el inicio de sesión con Google.
 - **Amazon API Gateway**: Servicio que permite enrutar y conectar el lambda.
-- **AWS Lambda**: Es el corazón del backend donde reside la lógica de negocio (POST, GET, DELETE de fotos). Utiliza boto3 para interactuar con S3 y DynamoDB. La validación de tokens JWT de Cognito se realiza aquí para autorizar las acciones de cada usuario.
+- **AWS Lambda**: Es el corazón del backend donde reside el código (POST, GET, DELETE de fotos). Utiliza boto3 para interactuar con S3 y DynamoDB. La validación de tokens JWT de Cognito se realiza aquí para autorizar las acciones de cada usuario.
 - **Cloudwatch**: Al usar lambda se genera un registro automático en Cloudwatch donde visualizo todos los logs de las funciones que se ejecuten en el lambda.
 - **DynamoDB**: Para almacenar todos los metadatos de las fotos: su ID, user ID, nombre, s3_key, URL de CloudFront y estado. Sirve para garantizar que cada usuario solo acceda a sus propias fotos (autorización basada en el user ID).
 
